@@ -1,116 +1,65 @@
 {
   "project_info": {
-    "project_number": "425734009309",
-    "firebase_url": "https://fir-example-app-69765-default-rtdb.firebaseio.com",
-    "project_id": "fir-example-app-69765",
-    "storage_bucket": "fir-example-app-69765.appspot.com"
+    "project_number": "651772940713",
+    "firebase_url": "https://groceryappmultivendor-53e5b-default-rtdb.firebaseio.com",
+    "project_id": "groceryappmultivendor-53e5b",
+    "storage_bucket": "groceryappmultivendor-53e5b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:425734009309:android:7f2d9c5e14352881658634",
+        "mobilesdk_app_id": "1:651772940713:android:0e1a278a869d4d3965b4b8",
         "android_client_info": {
           "package_name": "com.app.fresh_find_admin"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "425734009309-2fr7l2ua3vlsvhv2hhifsb8me0m6h4p9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCAAvai19QRsN8T7_j01h6Xz7dkJkd8deQ"
+          "current_key": "AIzaSyAUzqLJ8bNaFpW9I5EAFNaANB0DUWX2X78"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "425734009309-2fr7l2ua3vlsvhv2hhifsb8me0m6h4p9.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "425734009309-beh5di82nh44ep2kmr79r7k7j3gqopkq.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.flutterFirebase"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:425734009309:android:b0b797173397139e658634",
+        "mobilesdk_app_id": "1:651772940713:android:ffb57f6544d2f8ba65b4b8",
         "android_client_info": {
           "package_name": "com.app.fresh_find_user"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "425734009309-2fr7l2ua3vlsvhv2hhifsb8me0m6h4p9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCAAvai19QRsN8T7_j01h6Xz7dkJkd8deQ"
+          "current_key": "AIzaSyAUzqLJ8bNaFpW9I5EAFNaANB0DUWX2X78"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "425734009309-2fr7l2ua3vlsvhv2hhifsb8me0m6h4p9.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "425734009309-beh5di82nh44ep2kmr79r7k7j3gqopkq.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.flutterFirebase"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:425734009309:android:e964211b7f82a2ed658634",
+        "mobilesdk_app_id": "1:651772940713:android:7265d5933e497c1a65b4b8",
         "android_client_info": {
           "package_name": "com.app.fresh_find_vendor"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "425734009309-2fr7l2ua3vlsvhv2hhifsb8me0m6h4p9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCAAvai19QRsN8T7_j01h6Xz7dkJkd8deQ"
+          "current_key": "AIzaSyAUzqLJ8bNaFpW9I5EAFNaANB0DUWX2X78"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "425734009309-2fr7l2ua3vlsvhv2hhifsb8me0m6h4p9.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "425734009309-beh5di82nh44ep2kmr79r7k7j3gqopkq.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.flutterFirebase"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
