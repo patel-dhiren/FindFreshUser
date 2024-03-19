@@ -4,13 +4,15 @@ class UserData {
   String name;
   String email;
   int createdAt;
+  bool isActive;
 
   UserData(
       {required this.id,
       required this.contact,
       required this.name,
       required this.email,
-      required this.createdAt});
+      required this.createdAt,
+      this.isActive = true});
 
   Map<String, dynamic> toJson() {
     return {
@@ -19,6 +21,7 @@ class UserData {
       "name": this.name,
       "email": this.email,
       "createdAt": this.createdAt,
+      "isActive": this.isActive,
     };
   }
 
@@ -29,6 +32,7 @@ class UserData {
       name: json["name"],
       email: json["email"],
       createdAt: json["createdAt"],
+      isActive: json["isActive"],
     );
   }
 //
