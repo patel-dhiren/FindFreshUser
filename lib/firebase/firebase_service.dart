@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:fresh_find_user/models/address.dart';
 import 'package:fresh_find_user/models/order.dart';
 
@@ -181,6 +182,21 @@ class FirebaseService {
       return items;
     }
     return items;
+  }
+
+  Stream<List<Item>> fetchItemsStream(String vendorId) {
+    return _database.ref().child('items/$vendorId').onValue.map((event) {
+      List<Item> items = [];
+      if (event.snapshot.exists) {
+        Map<dynamic, dynamic> productsMap =
+        event.snapshot.value as Map<dynamic, dynamic>;
+        productsMap.forEach((key, value) {
+          final item = Item.fromJson(Map<String, dynamic>.from(value));
+          items.add(item);
+        });
+      }
+      return items;
+    });
   }
 
   Future<List<Item>> searchItemByName(String query) async {
@@ -385,7 +401,21 @@ class FirebaseService {
     order.orderId = id;
     if(id!=null){
       await _database.ref().child('orders').child(id).set(order.toJson());
-      await _database.ref().child('vendorOrders').set(order.toVendorSpecificOrdersJson());
+      Map<String, dynamic> individualOrders = order.toVendorSpecificOrdersJson();
+      for(var entry in individualOrders.entries){
+
+        var vendorId = entry.key;
+        var orders = entry.value as Map<dynamic, dynamic>;
+
+        for(var entry in orders.entries){
+          await _database.ref().child('vendorOrders').child(vendorId).child(entry.key).set(entry.value);
+        }
+
+        //var orderKey = order.key
+
+
+      }
+      //await _database.ref().child('vendorOrders').update(order.toVendorSpecificOrdersJson());
       await _database.ref().child('userCarts').child(order.userId!).remove();
     }
 
@@ -416,4 +446,88 @@ class FirebaseService {
   Future<void> logout() async {
     await _firebaseAuth.signOut();
   }
+
+  final Map<String, ValueNotifier<bool>> _favorites = {};
+
+  void toggleFavorite(String productId) {
+    if (_firebaseAuth.currentUser != null) {
+      final ref = _database
+          .ref('userFavorites')
+          .child(_firebaseAuth.currentUser!.uid)
+          .child(productId);
+      ref.get().then((snapshot) async {
+        final isFavoriteNow = !snapshot.exists;
+        if (isFavoriteNow) {
+          await ref.set(true);
+        } else {
+          await ref.remove();
+        }
+
+        // Update the local ValueNotifier for this product's favorite status
+        _favorites[productId]?.value = isFavoriteNow;
+      });
+    }
+  }
+
+  ValueNotifier<bool> getFavoriteNotifier(String productId) {
+    // If the notifier doesn't exist, create it with a default value of false
+    _favorites.putIfAbsent(productId, () => ValueNotifier<bool>(false));
+    return _favorites[productId]!;
+  }
+
+  void updateFavorites(bool isFavorite, String productId) {
+    _favorites[productId]?.value = isFavorite;
+  }
+
+  Future<bool> getFavorite(String productId) async {
+    if (_firebaseAuth.currentUser != null) {
+      final snapshot = await _database
+          .ref('userFavorites')
+          .child(_firebaseAuth.currentUser!.uid)
+          .child(productId)
+          .get();
+      if (snapshot.exists) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
+
+  Future<List<String>> fetchUserFavoriteItemIds(String userId) async {
+    final snapshot = await _database.ref().child('userFavorites/$userId').get();
+    if (snapshot.exists && snapshot.value != null) {
+      Map<dynamic, dynamic> favorites =
+      Map<dynamic, dynamic>.from(snapshot.value as Map<dynamic, dynamic>);
+      return favorites.keys.cast<String>().toList();
+    } else {
+      return [];
+    }
+  }
+
+  Future<Map<dynamic, dynamic>> fetchItemDetails(String itemId) async {
+    final snapshot = await _database.ref().child('all-items/$itemId').get();
+    if (snapshot.exists && snapshot.value != null) {
+      return Map<dynamic, dynamic>.from(
+          snapshot.value as Map<dynamic, dynamic>);
+    } else {
+      return {};
+    }
+  }
+
+  Stream<List<Map<dynamic, dynamic>>> fetchUserFavoriteItemsStream() {
+    var userId = _firebaseAuth.currentUser!.uid;
+
+    // Stream.fromFuture is used here if fetchUserFavoriteItemIds returns a Future.
+    // If it's already a Stream, you can directly use it without Stream.fromFuture.
+    return Stream.fromFuture(fetchUserFavoriteItemIds(userId)).asyncMap((favoriteItemIds) async {
+      // Using Future.wait to concurrently fetch all item details
+      var futures = favoriteItemIds.map((itemId) => fetchItemDetails(itemId));
+      List<Map<dynamic, dynamic>> favoriteItemsDetails = await Future.wait(futures);
+      // Filtering out empty or null itemDetails if necessary
+      return favoriteItemsDetails.where((itemDetails) => itemDetails.isNotEmpty).toList();
+    });
+  }
+
 }

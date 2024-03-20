@@ -102,8 +102,8 @@ class _VendorDetailViewState extends State<VendorDetailView> {
   }
 
   Widget _buildItemList(String? vendorId) {
-    return FutureBuilder(
-      future: FirebaseService().fetchItems(vendorId!),
+    return StreamBuilder(
+      stream: FirebaseService().fetchItemsStream(vendorId!),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return _buildShimmerEffect();
@@ -139,7 +139,8 @@ class _VendorDetailViewState extends State<VendorDetailView> {
           var item = items[index];
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, AppConstant.itemView, arguments: item);
+              Navigator.pushNamed(context, AppConstant.itemView,
+                  arguments: item);
             },
             child: Card(
               elevation: 1,
@@ -196,15 +197,52 @@ class _VendorDetailViewState extends State<VendorDetailView> {
                               SizedBox(
                                 height: 8,
                               ),
-                              Text(
-                                item.description,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey.shade500,
-                                ),
-                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      item.description,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey.shade500,
+                                      ),
+                                    ),
+                                  ),
+                                  FutureBuilder(
+                                    initialData: false,
+                                    future:
+                                        FirebaseService().getFavorite(item.id!),
+                                    builder: (context, snapshot) {
+                                      var isFavorite =
+                                          snapshot.hasData && snapshot.data!;
+
+                                      FirebaseService().updateFavorites(
+                                          isFavorite, item.id!);
+
+                                      return ValueListenableBuilder<bool>(
+                                        valueListenable: FirebaseService()
+                                            .getFavoriteNotifier(item.id!),
+                                        builder: (context, isFavorite, _) {
+                                          return InkWell(
+                                            onTap: () {
+                                              FirebaseService()
+                                                  .toggleFavorite(item.id!);
+                                            },
+                                            child: Icon(
+                                              isFavorite
+                                                  ? Icons.favorite
+                                                  : Icons.favorite_border,
+                                              color: Colors.red,
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  )
+                                ],
+                              )
                             ],
                           ),
                         ),

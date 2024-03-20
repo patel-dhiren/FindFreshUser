@@ -69,6 +69,18 @@ class _ItemDetailViewState extends State<ItemDetailView> {
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                 ),
+                ValueListenableBuilder<bool>(
+                  valueListenable: FirebaseService().getFavoriteNotifier(widget.item.id!),
+                  builder: (context, isFavorite, _) {
+                    return InkWell(
+                      onTap: () => FirebaseService().toggleFavorite(widget.item.id!),
+                      child: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.red,
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
             SizedBox(height: 8),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fresh_find_user/views/home/account/account_view.dart';
 import 'package:fresh_find_user/views/home/cart/cart_view.dart';
+import 'package:fresh_find_user/views/home/favourite/favourite_view.dart';
 import 'package:fresh_find_user/views/home/search/search_view.dart';
 import 'package:fresh_find_user/views/home/shop/shop_view.dart';
 
@@ -17,7 +18,7 @@ class DashboardView extends StatefulWidget {
 class _DashboardViewState extends State<DashboardView> {
   int _selectedIndex = 0;
 
-  var _widgetOptions = [ShopView(),SearchCategoryView(), CartView(), AccountView()];
+  var _widgetOptions = [ShopView(),SearchCategoryView(),FavouriteView(), CartView(), AccountView()];
 
   @override
   void initState() {
@@ -48,6 +49,10 @@ class _DashboardViewState extends State<DashboardView> {
           NavigationDestination(
             icon: Icon(Icons.search_sharp),
             label: 'Search',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.bookmark_border),
+            label: 'Favourite',
           ),
           NavigationDestination(
             icon: Icon(Icons.shopping_cart_outlined),
